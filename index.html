@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Опросный лист Macroscop</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --surface: #ffffff;
+            --line: #e6e0df;
+            --text: #171625;
+            --muted: #898890;
+            --accent: #1fb369;
+            --accent-soft: #f2f3ff;
+            --blue: #007aed;
+            --orange: #ff7b34;
+            --pink: #db89da;
+            --sky: #47a6ff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px 12px 32px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Manrope", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .container {
+    max-width: 1000px;
+    margin: 0 auto 16px;
+    padding: 20px 20px 20px;
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: 18px;
+    box-shadow: 0 16px 32px rgba(33, 39, 91, 0.1);
+    overflow: hidden;
+}
+
+        .container .container {
+    max-width: 1320px;
+    margin: 0 auto 16px;
+    padding: 24px 24px 24px;
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: 18px;
+    box-shadow: 0 16px 32px rgba(33, 39, 91, 0.1);
+    overflow: hidden;
+}
+
+        .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 60px;
+    border-bottom: 1px solid var(--line);
+    padding: 0 20px;
+}
+
+        .topbar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    text-transform: lowercase;
+    line-height: 1;
+    font-family: "Nunito Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+        .brand-icon {
+            width: 24px;
+            height: 24px;
+            flex: 0 0 24px;
+        }
+
+        .topbar-title {
+            margin-right: auto;
+            color: var(--muted);
+            font-size: 14px;
+            max-width: 320px;
+        }
+
+        .topbar-pill {
+            border: 0;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            border-radius: 999px;
+            padding: 0 20px;
+            height: 46px;
+            background: linear-gradient(125deg, var(--orange) 10%, #ff8771 28%, var(--pink) 54%, var(--sky) 78%, var(--blue) 100%);
+            box-shadow: 0 8px 20px rgba(36, 43, 96, 0.2);
+        }
+
+        .tabs,
+        .tab,
+        .tab-content {
+            display: none;
+        }
+
+        .section {
+    margin: 0;
+    padding: 16px 0;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+        .section:last-child {
+            border-bottom: 0;
+        }
+
+        h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    text-align: left;
+    max-width: 100%;
+    padding: 0;
+}
+
+        h2 {
+            margin: 0 0 12px;
+            padding: 0;
+            border: 0;
+            color: var(--text);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        h3,
+        h4 {
+            margin: 0 0 8px;
+            color: var(--text) !important;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .form-group {
+    margin: 0 0 10px;
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 6px 16px rgba(33, 39, 91, 0.04);
+    display: grid;
+    grid-template-columns: minmax(140px, 25%) 1fr;
+    gap: 6px 12px;
+    align-items: start;
+}
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-group > label:first-child,
+        .form-group > strong:first-child {
+            grid-column: 1;
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.35;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .form-group > *:not(label:first-child):not(strong:first-child) {
+            grid-column: 2;
+            min-width: 0;
+        }
+
+        .form-group label {
+            margin: 0 0 6px;
+            display: block;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        select,
+        input[type="number"],
+        textarea {
+            width: 100%;
+            border: 1.5px solid var(--line);
+            border-radius: 14px;
+            background: #fff;
+            color: var(--text);
+            padding: 0 12px;
+            min-height: 42px;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        select:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            border-color: #b9c0d3;
+            box-shadow: 0 0 0 3px rgba(35, 118, 255, 0.08);
+        }
+
+        textarea {
+            padding: 10px 12px;
+            min-height: 70px;
+            resize: vertical;
+            font-family: "Manrope", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 13px;
+        }
+
+        .streams-container {
+            display: grid;
+            gap: 10px;
+        }
+
+        .stream-setup {
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .stream-setup > * {
+            grid-column: 1 !important;
+        }
+
+        .stream-setup .streams-container {
+            gap: 14px;
+        }
+
+        .stream-row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(90px, 1fr));
+            gap: 6px;
+            align-items: start;
+        }
+
+        .stream-setup .stream-row {
+            grid-template-columns: repeat(2, minmax(140px, 1fr));
+            gap: 8px 12px;
+        }
+
+        .stream-field {
+            min-width: 0;
+        }
+
+        .stream-field label {
+            margin-bottom: 5px;
+            color: var(--muted);
+        }
+
+        .stream-field input,
+        .stream-field select {
+            width: 100% !important;
+        }
+
+        .group-additional-streams {
+            display: grid;
+            gap: 12px;
+            grid-column: 1 / -1;
+            min-width: 0;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 28px;
+            margin-top: 2px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            inset: 0;
+            cursor: pointer;
+            border-radius: 999px;
+            background: #d9d9d9;
+            transition: background-color 0.2s ease;
+        }
+
+        .slider:before {
+            content: "";
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(32, 45, 65, 0.28);
+            transition: transform 0.2s ease;
+        }
+
+        .toggle-switch input:checked + .slider {
+            background: var(--accent);
+        }
+
+        .toggle-switch input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 14px;
+            margin-top: 2px;
+        }
+
+        .checkbox-item,
+        .radio-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 16px;
+            border: 1.5px solid var(--line);
+            background: #fff;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            accent-color: var(--accent);
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            color: var(--muted);
+            border-bottom: 1px dotted #b5b8c4;
+            cursor: help;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 260px;
+            background: #202430;
+            color: #fff;
+            text-align: left;
+            border-radius: 8px;
+            padding: 10px;
+            position: absolute;
+            z-index: 10;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            font-size: 12px;
+            font-weight: 400;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .analytics-row {
+            display: grid;
+            grid-template-columns: minmax(110px, 1fr) 70px auto auto;
+            gap: 6px;
+            align-items: center;
+            margin-bottom: 5px;
+            padding: 5px 0;
+        }
+
+        .analytics-row .cameras-label {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .add-btn {
+            border: 1.5px solid var(--line);
+            background: #fff;
+            color: var(--text);
+            border-radius: 14px;
+            padding: 0 16px;
+            height: 38px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .add-btn:hover {
+            border-color: #d1cbca;
+            background: #fefeff;
+            box-shadow: 0 10px 20px rgba(33, 39, 91, 0.08);
+        }
+
+        .add-btn.block {
+            width: 100%;
+        }
+
+        .remove-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #e7c0b8;
+            border-radius: 999px;
+            background: #fff;
+            color: #db3f3f;
+            font-size: 16px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .total-cameras {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 48px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            border: 1px solid #cfd1ea;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .totals-row {
+            grid-template-columns: 1fr;
+        }
+
+        .totals-row > * {
+            grid-column: 1 !important;
+        }
+
+        .os-section {
+            grid-template-columns: minmax(200px, 1fr) auto;
+            align-items: center;
+            gap: 10px 14px;
+        }
+
+        .os-section > * {
+            grid-column: auto !important;
+        }
+
+        .os-heading {
+            display: grid;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .os-heading strong {
+            margin: 0;
+            font-size: 18px;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
+
+        .os-heading span {
+            margin: 0;
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .os-options {
+            display: inline-flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .os-option {
+            height: 48px;
+            min-width: 110px;
+            padding: 0 15px;
+            border: 1.5px solid var(--line);
+            border-radius: 12px;
+            background: #fff;
+            color: var(--muted);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+        }
+
+        .os-option:hover {
+            border-color: #d7d0cf;
+            box-shadow: 0 8px 16px rgba(33, 39, 91, 0.08);
+        }
+
+        .os-option.active {
+            background: var(--accent-soft);
+            color: var(--text);
+            border-color: #d8d5ef;
+            box-shadow: 0 10px 18px rgba(33, 39, 91, 0.12);
+        }
+
+        .os-mark {
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            border: 1px solid var(--line);
+            color: transparent;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .os-option.active .os-mark {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .os-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.9;
+        }
+
+        .os-select-hidden {
+            display: none !important;
+        }
+
+        .stream-section {
+            margin-left: 0;
+            padding: 14px;
+            border: 1.5px solid var(--line);
+            border-radius: 22px;
+            background: #fff;
+            box-shadow: 0 10px 24px rgba(33, 39, 91, 0.05);
+        }
+
+        .camera-group .stream-section {
+            border: none;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            margin-left: 0;
+        }
+
+        .camera-group {
+            width: 100%;
+            border: 1.5px solid var(--line);
+            border-radius: 22px;
+            background: #fff;
+            box-shadow: 0 10px 24px rgba(33, 39, 91, 0.05);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .camera-group h3 {
+            font-size: 18px !important;
+            color: var(--text) !important;
+        }
+
+        .camera-group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .camera-group-title {
+            margin: 0;
+            font-size: 18px;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .actions {
+            margin-top: 16px;
+            padding: 22px 0 4px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            background: transparent;
+            border-radius: 0;
+        }
+
+        .save-btn {
+            border: 0;
+            border-radius: 999px;
+            padding: 0 20px;
+            height: 48px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        #copy-to-clipboard.save-btn {
+            color: #fff;
+            background: linear-gradient(125deg, var(--orange) 10%, #ff8771 28%, var(--pink) 54%, var(--sky) 78%, var(--blue) 100%);
+            box-shadow: 0 20px 28px rgba(33, 39, 91, 0.2);
+        }
+
+        #save-to-file.save-btn {
+            color: #171625;
+            background: #fff;
+            border: 1.5px solid var(--line);
+            box-shadow: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media screen and (max-width: 880px) {
+            .container {
+    max-width: 1000px;
+    margin: 0 auto 16px;
+    padding: 0 20px 20px;
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: 18px;
+    box-shadow: 0 16px 32px rgba(33, 39, 91, 0.1);
+    overflow: hidden;
+}
+
+            h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    text-align: left;
+    max-width: 100%;
+    padding: 0;
+}
+
+            .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 60px;
+    border-bottom: 1px solid var(--line);
+}
+
+            .topbar-title {
+                order: 3;
+                width: 100%;
+                max-width: none;
+            }
+
+            .form-group {
+    margin: 0 0 10px;
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 6px 16px rgba(33, 39, 91, 0.04);
+    display: grid;
+    grid-template-columns: minmax(140px, 25%) 1fr;
+    gap: 6px 12px;
+    align-items: start;
+}
+
+            .form-group > label:first-child,
+            .form-group > strong:first-child,
+            .form-group > *:not(label:first-child):not(strong:first-child) {
+                grid-column: 1;
+            }
+
+            .stream-row,
+            .analytics-row {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .save-btn {
+                width: 100%;
+                height: 48px;
+            }
+
+            .os-section {
+                grid-template-columns: 1fr;
+            }
+
+            .os-options {
+                justify-content: flex-start;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 0 16px 16px;
+                border-radius: 16px;
+            }
+            
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                min-height: auto;
+                padding: 12px 0;
+            }
+            
+            .topbar-pill {
+                width: 100%;
+                height: 42px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            h2 {
+                font-size: 16px;
+            }
+            
+            .form-group {
+                grid-template-columns: 1fr;
+                padding: 8px 10px;
+            }
+            
+            .os-section {
+                gap: 8px;
+            }
+            
+            .os-options {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .os-option {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .save-btn {
+                height: 44px;
+                font-size: 10px;
+            }
+        }
+        .form-group.privacy-group {
+            display: block;
+            padding: 12px;
+        }
+        .form-group.privacy-group .privacy-checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            width: 100%;
+        }
+        .form-group.privacy-group .privacy-checkbox-container label {
+            flex: 1;
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* Анимации на псевдоэлементах */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes underline {
+            0% { width: 0; left: 50%; }
+            100% { width: 100%; left: 0; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(180deg); }
+        }
+
+        @keyframes checkmark {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Пульсация для счетчика камер */
+        .total-cameras {
+            position: relative;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+
+        /* Плавающие точки на фоне контейнера */
+        .container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before,
+        .container::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0.1;
+            z-index: -1;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .container::before {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .container::after {
+            bottom: 30%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        /* Анимация галочки в выбранной ОС */
+        .os-option.active .os-mark {
+            animation: checkmark 0.4s ease-out;
+        }
+
+        /* Анимация при наведении на form-group */
+        .form-group {
+            position: relative;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-group:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(33, 39, 91, 0.08);
+        }
+
+        .form-group::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent);
+            border-radius: 4px 0 0 4px;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .form-group:hover::before {
+            transform: scaleY(1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <div class="topbar-brand">
+                <span>Macroscop</span>
+                <svg class="brand-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                    <circle cx="12" cy="12" r="12" fill="#E84D30"/>
+                    <path d="M10 7.5L14.5 12L10 16.5" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <!-- <div class="topbar-title">Опросный лист для подбора оборудования видеонаблюдения</div> -->
+            <button class="topbar-pill" type="button">Подбор решения под ваши задачи</button>
+        </div>
+
+        <!-- Первая вкладка: Опросный лист для подбора оборудования видеонаблюдения -->
+        <div id="server-main" class="section">
+            <h1>Опросный лист для подбора оборудования видеонаблюдения</h1>
+            
+            <div id="detailed-questions">
+                <h2>Какое разрешение потоков будет использоваться у камер?</h2>
+                <div class="form-group stream-setup">
+                    <button id="add-camera-group" class="add-btn block">Добавить группу камер</button>
+                </div>
+
+                <div class="form-group totals-row">
+                    <strong>Общее количество камер во всех группах: <span id="total-group-cameras" class="total-cameras">0</span></strong>
+                </div>
+
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Какую аналитику вы хотели бы использовать?</label>
+                <div id="analytics-container">
+                    <!-- Динамически добавляемые строки аналитики -->
+                </div>
+                <button id="add-analytics" class="add-btn">Добавить аналитику</button>
+                <div style="margin-top: 10px;">
+                    <strong>Общее количество аналитики: <span id="total-cameras" class="total-cameras">0</span></strong>
+                </div>
+            </div>
+
+            
+
+            <div class="form-group os-section">
+                <div class="os-heading">
+                    <strong>Операционная система</strong>
+                    <span>На какую ОС ориентируетесь?</span>
+                </div>
+                <div class="os-options" role="radiogroup" aria-label="Выбор операционной системы">
+                    <button type="button" class="os-option active" data-os-value="Windows" aria-pressed="true">
+                        <span class="os-mark">✓</span>
+                        <svg class="os-icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M1 2.5L7.2 1.5V7.2H1V2.5ZM8.1 1.36L15 0.25V7.2H8.1V1.36ZM1 8.1H7.2V13.85L1 12.96V8.1ZM8.1 8.1H15V15.75L8.1 14.74V8.1Z" fill="currentColor"/>
+                        </svg>
+                        <span>Windows</span>
+                    </button>
+                    <button type="button" class="os-option" data-os-value="Linux" aria-pressed="false">
+                        <span class="os-mark">✓</span>
+                        <svg class="os-icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M8 1.2C6.98 1.2 6.18 2.05 6.2 3.1C6.22 4.1 6.95 4.95 8 4.95C9.05 4.95 9.78 4.1 9.8 3.1C9.82 2.05 9.02 1.2 8 1.2ZM5.1 6.1C5.1 5.27 5.77 4.6 6.6 4.6H9.4C10.23 4.6 10.9 5.27 10.9 6.1V9.35H12.3C12.97 9.35 13.5 9.89 13.5 10.55V12.2C13.5 12.87 12.97 13.4 12.3 13.4H3.7C3.03 13.4 2.5 12.87 2.5 12.2V10.55C2.5 9.89 3.03 9.35 3.7 9.35H5.1V6.1ZM6.6 10.6C6.27 10.6 6 10.87 6 11.2C6 11.53 6.27 11.8 6.6 11.8C6.93 11.8 7.2 11.53 7.2 11.2C7.2 10.87 6.93 10.6 6.6 10.6ZM9.4 10.6C9.07 10.6 8.8 10.87 8.8 11.2C8.8 11.53 9.07 11.8 9.4 11.8C9.73 11.8 10 11.53 10 11.2C10 10.87 9.73 10.6 9.4 10.6Z" fill="currentColor"/>
+                        </svg>
+                        <span>Linux</span>
+                    </button>
+                </div>
+                <select id="os" class="os-select-hidden" aria-hidden="true" tabindex="-1">
+                    <option selected>Windows</option>
+                    <option>Linux</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="width: 100%; display: block;">
+                <div style="display: grid; grid-template-columns: minmax(120px, 180px) minmax(160px, 220px) minmax(160px, 220px); grid-template-rows: auto auto; gap: 16px 10px; align-items: start; justify-items: center; margin: 0 auto; width: fit-content;">
+                    <!-- Глубина архива занимает первую колонку -->
+                    <div style="grid-column: 1; grid-row: 1 / span 2; display: flex; align-items: center; justify-content: flex-start; font-weight: bold; font-size: 16px; color: var(--text); border-right: 1px solid var(--line); height: 100%; padding: 0 20px 0 8px; text-align: left;">
+                        Глубина архива
+                    </div>
+                    
+                    <!-- Вопрос о часах занимает колонку 2 -->
+                    <div style="grid-column: 2; grid-row: 1; font-weight: bold; color: var(--text); font-size: 14px; text-align: center; width: 100%;">
+                        Сколько часов в сутки запись?
+                    </div>
+                    <div style="grid-column: 2; grid-row: 2; display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%;">
+                        <label style="margin: 0; font-size: 13px; color: var(--muted); font-weight: 600;">Запись, ч/сут:</label>
+                        <input type="number" id="recording-hours" min="1" max="24" value="24" style="width: 90px;">
+                    </div>
+                    
+                    <!-- Вопрос о днях занимает колонку 3 -->
+                    <div style="grid-column: 3; grid-row: 1; font-weight: bold; color: var(--text); font-size: 14px; text-align: center; width: 100%;">
+                        Сколько дней хранится архив?
+                    </div>
+                    <div style="grid-column: 3; grid-row: 2; display: flex; align-items: center; justify-content: center; width: 100%;">
+                        <input type="number" id="archive-days" min="1" value="30" style="width: 90px;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Опишите архитектуру системы видеонаблюдения, которую хотели бы видеть:</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="architecture-a" name="architecture" value="a">
+                        <label for="architecture-a">Единый центр обработки видео, камеры с трансляцией видео на объектах</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="architecture-b" name="architecture" value="b">
+                        <label for="architecture-b">Сервер и камеры на каждом объекте</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="architecture-c" name="architecture" value="c">
+                        <label for="architecture-c">Свой вариант ответа</label>
+                    </div>
+                </div>
+                <div id="custom-architecture" class="hidden">
+                    <textarea id="custom-architecture-text" rows="4" placeholder="Опишите ваш вариант..."></textarea>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Если у вас остались комментарии, можете указать их здесь.</label>
+                <textarea id="server-main-comments" placeholder="Введите ваши комментарии здесь..."></textarea>
+            </div>
+        </div>
+
+        <!-- Вторая вкладка: Вопросы для подбора серверного оборудования-->
+<div class="container">
+        <div id="server-tech" class="section">
+            <!-- <h1>Вопросы для подбора серверного оборудования</h1> -->
+        
+            <div class="form-group">
+                <label>Планируете приобретать сервер у Macroscop?</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="select-server-equipment" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div id="server-questions">
+                <!-- <h2>Вопросы для подбора серверного оборудования:</h2> -->
+                
+                <div class="form-group">
+                    <label>В каком исполнении должен быть корпус сервера?</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="chassis-rack" name="chassis-rack" value="rack">
+                            <label for="chassis-rack">rack</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="chassis-tower" name="chassis-tower" value="tower">
+                            <label for="chassis-tower">tower</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Будут ли мониторы для отображения камер в реальном времени?</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="use-monitors">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div id="monitor-questions" class="hidden">
+                    <div class="form-group">
+                        <label>
+                            Какое разрешение мониторов будет использоваться? 
+                            <span class="tooltip">?
+                                <span class="tooltiptext">Предпочтительное разрешение для уменьшения требований к оборудованию  -FHD (1920×1080)</span>
+                            </span>
+                        </label>
+                        <select id="monitor-resolution">
+                            <option value="HD">HD (1280x720)</option>
+                            <option value="FHD" selected>FHD (1920×1080)</option>
+                            <option value="2K">2K (2048x1080)</option>
+                            <option value="4K">4K (3840×2160)</option>
+                            <option value="8K">8K (7680×4320)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Какое количество мониторов будет использоваться?</label>
+                        <input type="number" id="monitor-count" min="1" value="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Какое количество камер будет выводится на мониторы?</label>
+                        <input type="number" id="cameras-per-monitor" min="1" value="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Использовать hot swap (горячая замена дисков) в сервере для архива?</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="hot-swap">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>Необходим ли рейд контроллер в серверном оборудовании?</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="raid-controller">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>Использовать зеркалирование системного раздела (Raid 1)?</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="raid-1">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>Использовать резервирование питания для сервера (два блока питания)?</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="redundant-psu">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Учесть наличие BMC (IPMI)  при сборке сервера?
+                        <span class="tooltip">?
+                            <span class="tooltiptext">Микроконтроллер на материнской плате сервера, который работает независимо от основной ОС и даёт администратору доступ к управлению оборудованием удалённо, через web-интерфейс или IPMI-протокол</span>
+                        </span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="ipmi">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div id="spec-questions" class="hidden">
+                <div class="form-group">
+                    <label>Необходим подбор спецификаций сервера, для самостоятельной покупки оборудования?</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="select-specs">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Если у вас остались комментарии, можете указать их здесь.</label>
+                <textarea id="server-tech-comments" placeholder="Введите ваши комментарии здесь..."></textarea>
+            </div>
+        </div>
+
+        <!-- Третья вкладка: Вопросы для расчета клиентского оборудования -->
+        <div id="client" class="section">
+            <h1>Вопросы для расчета клиентского оборудования</h1>
+            
+            <div class="form-group">
+                <label>Необходим подбор клиентского оборудования?</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="select-client-equipment">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div id="client-questions" class="hidden">
+                <div class="form-group">
+                    <label>Какое количество мониторов будет использоваться?</label>
+                    <input type="number" id="client-monitor-count" min="1" value="1">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Какое разрешение мониторов будет использоваться?
+                        <span class="tooltip">?
+                            <span class="tooltiptext">Предпочтительное разрешение для уменьшения требований к оборудованию - FHD (1920×1080)</span>
+                        </span>
+                    </label>
+                    <select id="client-monitor-resolution">
+                        <option value="HD">HD (1280x720)</option>
+                        <option value="FHD" selected>FHD (1920×1080)</option>
+                        <option value="2K">2K (2048x1080)</option>
+                        <option value="4K">4K (3840×2160)</option>
+                        <option value="8K">8K (7680×4320)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Какое разрешение будет использоваться у камер? Укажите разрешение основного и дополнительного потока.</label>
+                    <div class="stream-section">
+                        <div class="form-group">
+                            <label>Основной поток:</label>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <select id="client-main-stream">
+                                    <option value="0.3">0,3 MP</option>
+                                    <option value="0.4">0,4 MP</option>
+                                    <option value="1">1 MP</option>
+                                    <option value="1.3">1,3 MP</option>
+                                    <option value="2" selected>2 MP</option>
+                                    <option value="3">3 MP</option>
+                                    <option value="4">4 MP</option>
+                                    <option value="5">5 MP</option>
+                                    <option value="6">6 MP</option>
+                                    <option value="8">8 MP</option>
+                                    <option value="10">10 MP</option>
+                                    <option value="12">12 MP</option>
+                                </select>
+                                <select id="client-main-stream-codec">
+                                    <option value="h264" selected>H.264</option>
+                                    <option value="h265">H.265</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Дополнительный поток:</label>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <select id="client-secondary-stream">
+                                    <option value="0.3" selected>0,3 MP</option>
+                                    <option value="0.4">0,4 MP</option>
+                                    <option value="1">1 MP</option>
+                                    <option value="1.3">1,3 MP</option>
+                                    <option value="2">2 MP</option>
+                                    <option value="3">3 MP</option>
+                                    <option value="4">4 MP</option>
+                                    <option value="5">5 MP</option>
+                                    <option value="6">6 MP</option>
+                                    <option value="8">8 MP</option>
+                                    <option value="10">10 MP</option>
+                                    <option value="12">12 MP</option>
+                                </select>
+                                <select id="client-secondary-stream-codec">
+                                    <option value="h264" selected>H.264</option>
+                                    <option value="h265">H.265</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Какое исполнение корпуса необходимо для клиентского рабочего места?</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="client-chassis-rack" name="client-chassis-rack" value="rack">
+                            <label for="client-chassis-rack">rack</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="client-chassis-tower" name="client-chassis-tower" value="tower">
+                            <label for="client-chassis-tower">tower</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Использовать зеркалирование системного раздела (Raid 1)?</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="client-raid-1">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>Какое количество клиентских рабочих станций вам необходимо?</label>
+                    <input type="number" id="client-workstations" min="1" value="1">
+                </div>
+
+                <div class="form-group">
+                    <label>Какое количество камер будет выводится на мониторы?</label>
+                    <input type="number" id="client-cameras-per-monitor" min="1" value="1">
+                </div>
+
+                <div class="form-group">
+                    <label>Если у вас остались комментарии, можете указать их здесь.</label>
+                    <textarea id="client-comments" placeholder="Введите ваши комментарии здесь..."></textarea>
+                </div>
+            </div>
+        </div>
+        <!-- Поле для контактов -->
+        <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
+            <label><strong>Ваши контакты</strong> (телефон, email или другие способы связи):</label>
+            <textarea id="user-contacts" placeholder="Введите ваши контактные данные здесь..." rows="2"></textarea>
+        </div>
+
+        <!-- Согласие на обработку персональных данных -->
+        <div class="form-group privacy-group" style="margin-bottom: 20px;">
+            <div class="privacy-checkbox-container">
+                <input type="checkbox" id="privacy-checkbox">
+                <label for="privacy-checkbox">
+                    Я прочитал(а) и согласен(на) с <a href="https://macroscop.com/politika-konfidencialnosti-i-obrabotki-personalnyh-dannyh" target="_blank" style="color: var(--accent); text-decoration: underline;">Политикой конфиденциальности</a> и даю согласие на <a href="https://macroscop.com/politika-konfidencialnosti-i-obrabotki-personalnyh-dannyh" target="_blank" style="color: var(--accent); text-decoration: underline;">обработку своих персональных данных</a>.
+                </label>
+            </div>
+        </div>
+
+        <!-- Кнопки сохранения -->
+        <div class="actions">
+            <button id="copy-to-clipboard" class="save-btn">Сохранить в буфер</button>
+            <button id="save-to-file" class="save-btn">Сохранить результат в txt документ</button>
+        </div>
+    </div>
+    <script>
+        // Функциональность вкладок
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Убрать активный класс у всех вкладок и контентов
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Добавить активный класс к выбранной вкладке
+                tab.classList.add('active');
+                
+                // Показать соответствующий контент
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Список аналитик
+        const analyticsList = [
+            "Поиск объектов", 
+            "Трекинг",
+            "Подсчет посетителей",
+            "Определение длины очереди",
+            "Детектор скопления людей",
+            "Тепловая карта интенсивности движения",
+            "Контроль активности персонала",
+            "Обнаружение лиц",
+            "Детектор саботажа",
+            "Обнаружение оставленных предметов", 
+            "Детектор дыма и огня",
+            "Контроль спецодежды",
+            "Распознование автономеров (Macroscop)",
+            "Наполненность полок",
+            "Распознование лиц (Light)",
+            "Распознование лиц (Complete)",
+            "Подсчет уникальных посетителей",
+            "Подсчет объектов",
+            "Обнаружение спецтранспорта",
+            "Обнаружение падений"
+        ];
+
+        // Добавление строки аналитики
+        function addAnalyticsRow() {
+            const container = document.getElementById('analytics-container');
+            const row = document.createElement('div');
+            row.className = 'analytics-row';
+            
+            // Создаем select для аналитики
+            const select = document.createElement('select');
+            analyticsList.forEach(analytic => {
+                const option = document.createElement('option');
+                option.value = analytic;
+                option.textContent = analytic;
+                select.appendChild(option);
+            });
+            
+            // Создаем input для количества камер
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.min = '0';
+            input.value = '0';
+            input.className = 'camera-count';
+            
+            // Создаем метку
+            const label = document.createElement('span');
+            label.className = 'cameras-label';
+            label.textContent = 'кол-во камер';
+            
+            // Создаем кнопку удаления
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-btn';
+            removeBtn.textContent = '-';
+            removeBtn.onclick = function() {
+                container.removeChild(row);
+                updateTotalCameras();
+            };
+            
+            // Добавляем все элементы в строку
+            row.appendChild(select);
+            row.appendChild(input);
+            row.appendChild(label);
+            row.appendChild(removeBtn);
+            
+            // Добавляем обработчик изменения количества камер
+            input.addEventListener('input', updateTotalCameras);
+            select.addEventListener('change', updateTotalCameras);
+            
+            container.appendChild(row);
+            updateTotalCameras();
+        }
+
+        // Добавление группы камер
+        function addCameraGroup() {
+            // Получаем контейнер для групп камер или создаем его, если он еще не существует
+            let groupsContainer = document.getElementById('camera-groups-container');
+            if (!groupsContainer) {
+                groupsContainer = document.createElement('div');
+                groupsContainer.id = 'camera-groups-container';
+                // Вставляем контейнер для групп камер перед кнопкой
+                const addButton = document.getElementById('add-camera-group');
+                addButton.parentNode.insertBefore(groupsContainer, addButton);
+            }
+            
+            const group = document.createElement('div');
+            group.className = 'camera-group';
+            
+            // Создаем заголовок группы
+            const header = document.createElement('div');
+            header.className = 'camera-group-header';
+            
+            const title = document.createElement('h3');
+            title.className = 'camera-group-title';
+            // Нумерация групп
+            const groupNumber = document.querySelectorAll('.camera-group').length + 1;
+            title.textContent = `Камеры ${groupNumber}`;
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-btn';
+            removeBtn.textContent = '-';
+            removeBtn.onclick = function() {
+                groupsContainer.removeChild(group);
+                updateTotalGroupCameras();
+                console.error('Удаление группы, вызов renumberCameraGroups');
+                renumberCameraGroups();
+            };
+            
+            header.appendChild(title);
+            header.appendChild(removeBtn);
+            group.appendChild(header);
+            
+            // Создаем поля для группы камер - объединенные в одну строку
+            const groupContent = document.createElement('div');
+            
+            // Единый блок параметров видеопотоков группы
+            const streamsGroup = document.createElement('div');
+            streamsGroup.className = 'stream-section';
+            streamsGroup.innerHTML = `
+                <div class="streams-container">
+                    <!-- Первая строка с количеством камер и количеством потоков -->
+                    <div class="stream-row">
+                        <div class="stream-field">
+                            <label>Количество камер:</label>
+                            <input type="number" class="group-camera-count" min="1" value="1">
+                        </div>
+                        <div class="stream-field">
+                            <label>Количество потоков:</label>
+                            <select class="group-stream-count">
+                                <option value="1">1</option>
+                                <option value="2" selected>2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                        <!-- Динамически добавляемые строки потоков -->
+                        <div class="group-additional-streams">
+                        </div>
+                    </div>
+                </div>
+            `;
+            groupContent.appendChild(streamsGroup);
+            
+            group.appendChild(groupContent);
+            groupsContainer.appendChild(group);
+            
+            // Перемещаем кнопку под только что созданную группу
+            const addButton = document.getElementById('add-camera-group');
+            groupsContainer.parentNode.insertBefore(addButton, group.nextSibling);
+            
+            // Добавляем обработчики событий
+            const countInput = group.querySelector('.group-camera-count');
+            countInput.addEventListener('input', updateTotalGroupCameras);
+            
+            // Обработчик изменения количества потоков в группе
+            const streamCountSelect = group.querySelector('.group-stream-count');
+            streamCountSelect.addEventListener('change', function() {
+                const streamCount = parseInt(this.value);
+                const additionalStreamsContainer = group.querySelector('.group-additional-streams');
+                
+                // Очистим контейнер
+                additionalStreamsContainer.innerHTML = '';
+                
+                // Добавим строки потоков в том же 4-колоночном макете, начиная с потока 1
+                for (let i = 1; i <= streamCount; i++) {
+                    const streamRow = document.createElement('div');
+                    streamRow.className = 'stream-row';
+                    streamRow.innerHTML = `
+                        <div class="stream-field">
+                            <label>Разрешение потока ${i}:</label>
+                            <select class="group-stream-resolution-${i}">
+                                <option value="0.3">0,3 MP</option>
+                                <option value="0.4">0,4 MP</option>
+                                <option value="1">1 MP</option>
+                                <option value="1.3">1,3 MP</option>
+                                <option value="2" selected>2 MP</option>
+                                <option value="3">3 MP</option>
+                                <option value="4">4 MP</option>
+                                <option value="5">5 MP</option>
+                                <option value="6">6 MP</option>
+                                <option value="8">8 MP</option>
+                                <option value="10">10 MP</option>
+                                <option value="12">12 MP</option>
+                            </select>
+                        </div>
+                        <div class="stream-field">
+                            <label>Кодек потока ${i}:</label>
+                            <select class="group-stream-codec-${i}">
+                                <option value="h264" selected>H.264</option>
+                                <option value="h265">H.265</option>
+                            </select>
+                        </div>
+                    `;
+                    additionalStreamsContainer.appendChild(streamRow);
+                }
+                
+                // Установим значения по умолчанию для первого потока
+                const resolutionSelect1 = group.querySelector('.group-stream-resolution-1');
+                const codecSelect1 = group.querySelector('.group-stream-codec-1');
+                
+                if (resolutionSelect1) {
+                    resolutionSelect1.value = "2"; // 2 MP
+                }
+                
+                if (codecSelect1) {
+                    codecSelect1.value = "h264"; // H.264
+                }
+                
+                // Установим значения по умолчанию для второго потока, если он существует
+                if (streamCount >= 2) {
+                    const resolutionSelect2 = group.querySelector('.group-stream-resolution-2');
+                    const codecSelect2 = group.querySelector('.group-stream-codec-2');
+                    
+                    if (resolutionSelect2) {
+                        resolutionSelect2.value = "0.3"; // 0,3 MP
+                    }
+                    
+                    if (codecSelect2) {
+                        codecSelect2.value = "h264"; // H.264
+                    }
+                }
+            });
+            
+            // Автоматически отображаем второй поток при создании новой группы
+            streamCountSelect.dispatchEvent(new Event('change'));
+            
+            updateTotalGroupCameras();
+        }
+
+        // Обновление общего количества камер
+        function updateTotalCameras() {
+            let total = 0;
+            document.querySelectorAll('.analytics-row').forEach(row => {
+                const input = row.querySelector('.camera-count');
+                if (input) {
+                    total += parseInt(input.value) || 0;
+                }
+            });
+            
+            document.getElementById('total-cameras').textContent = total;
+        }
+
+        // Обновление общего количества камер во всех группах
+        function updateTotalGroupCameras() {
+            let total = 0;
+            document.querySelectorAll('.camera-group').forEach(group => {
+                const input = group.querySelector('.group-camera-count');
+                if (input) {
+                    total += parseInt(input.value) || 0;
+                }
+            });
+            
+            
+            document.getElementById('total-group-cameras').textContent = total;
+        }
+
+        // Перенумерация групп камер после удаления
+        function renumberCameraGroups() {
+            console.log('renumberCameraGroups вызвана, количество групп:', document.querySelectorAll('.camera-group').length);
+            document.querySelectorAll('.camera-group').forEach((group, index) => {
+                const title = group.querySelector('.camera-group-title');
+                if (title) {
+                    console.log('Изменяем заголовок группы', index, 'на', `Камеры ${index + 1}`);
+                    title.textContent = `Камеры ${index + 1}`;
+                }
+            });
+        }
+
+
+
+        // Показ/скрытие пользовательской архитектуры и взаимоисключающие чекбоксы
+        document.querySelectorAll('input[name="architecture"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const custom = document.getElementById('custom-architecture');
+                
+                // Показ/скрытие поля для своего варианта
+                if (this.value === 'c' && this.checked) {
+                    custom.classList.remove('hidden');
+                } else {
+                    custom.classList.add('hidden');
+                }
+                
+                // Взаимоисключающая логика
+                if (this.checked) {
+                    document.querySelectorAll('input[name="architecture"]').forEach(other => {
+                        if (other !== this) other.checked = false;
+                    });
+                }
+            });
+        });
+
+        // Показ/скрытие вопросов о мониторах
+        document.getElementById('use-monitors').addEventListener('change', function() {
+            const monitorQuestions = document.getElementById('monitor-questions');
+            if (this.checked) {
+                monitorQuestions.classList.remove('hidden');
+            } else {
+                monitorQuestions.classList.add('hidden');
+            }
+        });
+
+        // Показ/скрытие вопросов о серверном оборудовании
+        document.getElementById('select-server-equipment').addEventListener('change', function() {
+            const serverQuestions = document.getElementById('server-questions');
+            const specQuestions = document.getElementById('spec-questions');
+            
+            if (this.checked) {
+                serverQuestions.classList.remove('hidden');
+                specQuestions.classList.add('hidden');
+            } else {
+                serverQuestions.classList.add('hidden');
+                specQuestions.classList.remove('hidden');
+            }
+        });
+
+        // Выбор ОС в блоке с карточками
+        const osSelect = document.getElementById('os');
+        const osButtons = document.querySelectorAll('.os-option');
+
+        function syncOsButtons(value) {
+            osButtons.forEach(button => {
+                const isActive = button.dataset.osValue === value;
+                button.classList.toggle('active', isActive);
+                button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
+        }
+
+        osButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                osSelect.value = this.dataset.osValue;
+                syncOsButtons(osSelect.value);
+            });
+        });
+
+        syncOsButtons(osSelect.value);
+
+        // Инициализация первой строки аналитики
+        document.getElementById('add-analytics').addEventListener('click', addAnalyticsRow);
+        // Добавляем первую строку при загрузке
+        addAnalyticsRow();
+
+        // Инициализация первой группы камер
+        document.getElementById('add-camera-group').addEventListener('click', addCameraGroup);
+        
+        
+        // Автоматическое отображение второго потока при загрузке страницы для первой группы камер
+        function initializeFirstGroupStreams() {
+            const firstGroup = document.querySelector('.camera-group');
+            if (firstGroup) {
+                const streamCountSelect = firstGroup.querySelector('.group-stream-count');
+                if (streamCountSelect) {
+                    // Установим значение "2" для количества потоков по умолчанию
+                    streamCountSelect.value = "2";
+                    // Напрямую вызываем обработчик события change
+                    // Добавим небольшую задержку, чтобы убедиться, что DOM полностью загружен
+                    setTimeout(() => {
+                        const event = new Event('change');
+                        streamCountSelect.dispatchEvent(event);
+                    }, 0);
+                }
+            }
+        }
+        
+        // Вызываем инициализацию потоков для первой группы камер после загрузки DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            addCameraGroup();
+            initializeFirstGroupStreams();
+        });
+
+        // Показ/скрытие вопросов клиентского оборудования
+        document.getElementById('select-client-equipment').addEventListener('change', function() {
+            const clientQuestions = document.getElementById('client-questions');
+            if (this.checked) {
+                clientQuestions.classList.remove('hidden');
+                // Изменяем цвет переключателя на оранжевый при выборе "да"
+                this.parentNode.querySelector('.slider').style.backgroundColor = '#22b36d';
+            } else {
+                clientQuestions.classList.add('hidden');
+                // Возвращаем обычный цвет при выборе "нет"
+                this.parentNode.querySelector('.slider').style.backgroundColor = '';
+            }
+        });
+
+        // Функция для сбора всех ответов в формате markdown
+        function collectAnswers() {
+            let markdown = "# Опросный лист Macroscop\n\n";
+            
+            // Первая вкладка
+            markdown += "## Опросный лист для подбора оборудования видеонаблюдения\n\n";
+            
+            // Аналатика
+            markdown += "### Какую аналитику вы хотели бы использовать?\n";
+            let totalCameras = 0;
+            document.querySelectorAll('.analytics-row').forEach((row, index) => {
+                const select = row.querySelector('select');
+                const input = row.querySelector('.camera-count');
+                if (select && input) {
+                    const analytic = select.value;
+                    const count = input.value;
+                    markdown += `- ${analytic}: ${count} камер\n`;
+                    totalCameras += parseInt(count) || 0;
+                }
+            });
+            
+            markdown += `\n**Общее количество аналитики: ${totalCameras}**\n\n`;
+            
+            // ОС
+            const os = document.getElementById('os').value;
+            markdown += `### На какую ОС ориентируетесь?\n${os}\n\n`;
+            
+            // Хранение архива
+            const archiveDays = document.getElementById('archive-days').value;
+            const recordingHours = document.getElementById('recording-hours').value;
+            markdown += `### Сколько часов в сутки запись? Сколько дней хранится архив?\n`;
+            markdown += `- Хранение архива, дней: ${archiveDays}\n`;
+            markdown += `- Запись, ч/сут: ${recordingHours}\n\n`;
+            
+            // Архитектура
+            const architecture = document.querySelector('input[name="architecture"]:checked');
+            markdown += `### Опишите архитектуру системы видеонаблюдения\n`;
+            if (architecture) {
+                if (architecture.value === 'a') {
+                    markdown += "Единый центр обработки видео, камеры с трансляцией видео на объектах\n";
+                } else if (architecture.value === 'b') {
+                    markdown += "Сервер и камеры на каждом объекте\n";
+                } else if (architecture.value === 'c') {
+                    const custom = document.getElementById('custom-architecture-text').value;
+                    markdown += `Свой вариант: ${custom}\n`;
+                }
+            }
+            markdown += "\n";
+            
+            // Группы камер
+            markdown += "### Группы камер\n";
+            let totalGroupCameras = 0;
+            document.querySelectorAll('.camera-group').forEach((group, index) => {
+                const cameraCount = group.querySelector('.group-camera-count').value;
+                const streamCount = group.querySelector('.group-stream-count').value;
+                // Теперь первая строка потоков тоже имеет индекс 1
+                const streamResolution = group.querySelector('.group-stream-resolution-1') ? group.querySelector('.group-stream-resolution-1').value : group.querySelector('.group-stream-resolution').value;
+                const streamCodec = group.querySelector('.group-stream-codec-1') ? group.querySelector('.group-stream-codec-1').value : group.querySelector('.group-stream-codec').value;
+                
+                markdown += `\n**Камеры ${index + 1}**\n`;
+                markdown += `- Количество камер: ${cameraCount}\n`;
+                markdown += `- Количество потоков: ${streamCount}\n`;
+                markdown += `- Разрешение потока 1: ${streamResolution} MP\n`;
+                markdown += `- Кодек потока 1: ${streamCodec.toUpperCase()}\n`;
+                
+                // Добавляем информацию о дополнительных потоках
+                for (let i = 2; i <= streamCount; i++) {
+                    const additionalResolution = group.querySelector(`.group-stream-resolution-${i}`) ? group.querySelector(`.group-stream-resolution-${i}`).value : 'Не указано';
+                    const additionalCodec = group.querySelector(`.group-stream-codec-${i}`) ? group.querySelector(`.group-stream-codec-${i}`).value : 'Не указано';
+                    markdown += `- Разрешение потока ${i}: ${additionalResolution} MP\n`;
+                    markdown += `- Кодек потока ${i}: ${additionalCodec.toUpperCase()}\n`;
+                }
+                
+                totalGroupCameras += parseInt(cameraCount) || 0;
+            });
+            markdown += `\n**Общее количество камер во всех группах: ${totalGroupCameras}**\n\n`;
+            
+            // Вторая вкладка
+            markdown += "## Техническая часть реализации сервера\n\n";
+            
+            // Подбор серверного оборудования
+            const selectServer = document.getElementById('select-server-equipment').checked;
+            markdown += `### Подобрать серверное оборудование для видеонаблюдения?\n${selectServer ? 'Да' : 'Нет'}\n\n`;
+            
+            if (selectServer) {
+                // Вопросы для подбора серверного оборудования
+                markdown += "### Вопросы для подбора серверного оборудования\n";
+                
+                // Корпус сервера
+                const chassisCheckboxes = document.querySelectorAll('input[name^="chassis-"]:checked');
+                if (chassisCheckboxes.length > 0) {
+                    const chassisValues = Array.from(chassisCheckboxes).map(cb => cb.value).join(', ');
+                    markdown += `- В каком исполнении должен быть корпус сервера: ${chassisValues}\n`;
+                }
+                
+                // Мониторы
+                const useMonitors = document.getElementById('use-monitors').checked;
+                markdown += `- Будут ли мониторы для отображения камер в реальном времени: ${useMonitors ? 'Да' : 'Нет'}\n`;
+                
+                if (useMonitors) {
+                    const monitorResolution = document.getElementById('monitor-resolution').value;
+                    const monitorCount = document.getElementById('monitor-count').value;
+                    const camerasPerMonitor = document.getElementById('cameras-per-monitor').value;
+                    markdown += `  - Разрешение мониторов: ${monitorResolution}\n`;
+                    markdown += `  - Количество мониторов: ${monitorCount}\n`;
+                    markdown += `  - Количество камер на мониторы: ${camerasPerMonitor}\n`;
+                }
+                
+                // Hot swap
+                const hotSwap = document.getElementById('hot-swap').checked;
+                markdown += `- Использовать hot swap (горячая замена дисков): ${hotSwap ? 'Да' : 'Нет'}\n`;
+                
+                // RAID контроллер
+                const raidController = document.getElementById('raid-controller').checked;
+                markdown += `- Необходим ли рейд контроллер: ${raidController ? 'Да' : 'Нет'}\n`;
+                
+                // RAID 1
+                const raid1 = document.getElementById('raid-1').checked;
+                markdown += `- Использовать зеркалирование системного раздела (Raid 1): ${raid1 ? 'Да' : 'Нет'}\n`;
+                
+                // Резервирование питания
+                const redundantPSU = document.getElementById('redundant-psu').checked;
+                markdown += `- Использовать резервирование питания: ${redundantPSU ? 'Да' : 'Нет'}\n`;
+                
+                // IPMI
+                const ipmi = document.getElementById('ipmi').checked;
+                markdown += `- Использовать iLO, iDRAC, IPMI: ${ipmi ? 'Да' : 'Нет'}\n`;
+            } else {
+                // Подбор спецификаций
+                const selectSpecs = document.getElementById('select-specs').checked;
+                markdown += `### Необходим подбор спецификаций сервера, для самостоятельной покупки оборудования?\n${selectSpecs ? 'Да' : 'Нет'}\n`;
+            }
+            markdown += "\n";
+            
+            // Третья вкладка
+            markdown += "## Вопросы для расчета клиентского оборудования\n\n";
+            
+            // Подбор клиентского оборудования
+            const selectClient = document.getElementById('select-client-equipment').checked;
+            markdown += `### Необходим подбор клиентского оборудования?\n${selectClient ? 'Да' : 'Нет'}\n\n`;
+            
+            let clientComments = ''; // Объявляем переменную заранее
+            
+            if (selectClient) {
+                const clientMonitorCount = document.getElementById('client-monitor-count').value;
+                const clientMonitorResolution = document.getElementById('client-monitor-resolution').value;
+                const clientMainStream = document.getElementById('client-main-stream').value;
+                const clientSecondaryStream = document.getElementById('client-secondary-stream').value;
+                const clientChassisCheckboxes = document.querySelectorAll('input[name^="client-chassis-"]:checked');
+                const clientRaid1 = document.getElementById('client-raid-1').checked;
+                const clientWorkstations = document.getElementById('client-workstations').value;
+                const clientCamerasPerMonitor = document.getElementById('client-cameras-per-monitor').value;
+                clientComments = document.getElementById('client-comments').value; // Присваиваем значение только если блок активен
+                
+                markdown += `- Количество мониторов: ${clientMonitorCount}\n`;
+                markdown += `- Разрешение мониторов: ${clientMonitorResolution}\n`;
+                markdown += `- Основной поток камер: ${clientMainStream} MP\n`;
+                markdown += `- Дополнительный поток камер: ${clientSecondaryStream} MP\n`;
+                if (clientChassisCheckboxes.length > 0) {
+                    const clientChassisValues = Array.from(clientChassisCheckboxes).map(cb => cb.value).join(', ');
+                    markdown += `- Какое исполнение корпуса необходимо для клиентского рабочего места: ${clientChassisValues}\n`;
+                }
+                
+                // Добавляем информацию о кодеках
+                const clientMainStreamCodec = document.getElementById('client-main-stream-codec').value;
+                const clientSecondaryStreamCodec = document.getElementById('client-secondary-stream-codec').value;
+                markdown += `- Кодек основного потока: ${clientMainStreamCodec.toUpperCase()}\n`;
+                markdown += `- Кодек дополнительного потока: ${clientSecondaryStreamCodec.toUpperCase()}\n`;
+                
+                if (clientChassis) {
+                    markdown += `- Исполнение корпуса: ${clientChassis.value}\n`;
+                }
+                markdown += `- Использовать RAID 1: ${clientRaid1 ? 'Да' : 'Нет'}\n`;
+                markdown += `- Количество клиентских рабочих станций: ${clientWorkstations}\n`;
+                markdown += `- Количество камер на мониторы: ${clientCamerasPerMonitor}\n`;
+                if (clientComments) {
+                    markdown += `- Комментарии к расчету: ${clientComments}\n`;
+                }
+            }
+            
+            // Комментарии к расчету на всех вкладках
+            const serverMainComments = document.getElementById('server-main-comments').value;
+            if (serverMainComments) {
+                markdown += `\n### Комментарии к расчету (Серверное оборудование): ${serverMainComments}\n`;
+            }
+            
+            const serverTechComments = document.getElementById('server-tech-comments').value;
+            if (serverTechComments) {
+                markdown += `\n### Комментарии к расчету (Техническая часть сервера): ${serverTechComments}\n`;
+            }
+            
+            if (clientComments) {
+                markdown += `\n### Комментарии к расчету (Клиентское оборудование): ${clientComments}\n`;
+            }
+            
+            // Контактные данные
+            const userContacts = document.getElementById('user-contacts').value;
+            if (userContacts) {
+                markdown += `\n### Ваши контакты:\n${userContacts}\n`;
+            }
+            
+            // Согласие на обработку персональных данных
+            const privacyCheckbox = document.getElementById('privacy-checkbox');
+            if (privacyCheckbox && privacyCheckbox.checked) {
+                markdown += `\n### Клиент согласился на обработку персональных данных\n`;
+            }
+            
+            return markdown;
+        }
+
+        // Функция обновления состояния кнопок на основе контактов и чекбокса
+        function updateButtonStates() {
+            const contacts = document.getElementById('user-contacts').value.trim();
+            const checkbox = document.getElementById('privacy-checkbox');
+            const copyButton = document.getElementById('copy-to-clipboard');
+            const saveButton = document.getElementById('save-to-file');
+            
+            // Если в поле контактов есть данные, кнопки должны быть недоступны до отметки чекбокса
+            if (contacts.length > 0) {
+                // Кнопки активны только если чекбокс отмечен
+                const enabled = checkbox.checked;
+                copyButton.disabled = !enabled;
+                saveButton.disabled = !enabled;
+                
+                // Визуальное отключение (стили)
+                if (!enabled) {
+                    copyButton.style.opacity = '0.5';
+                    copyButton.style.cursor = 'not-allowed';
+                    saveButton.style.opacity = '0.5';
+                    saveButton.style.cursor = 'not-allowed';
+                } else {
+                    copyButton.style.opacity = '1';
+                    copyButton.style.cursor = 'pointer';
+                    saveButton.style.opacity = '1';
+                    saveButton.style.cursor = 'pointer';
+                }
+            } else {
+                // Если контактов нет, кнопки всегда доступны
+                copyButton.disabled = false;
+                saveButton.disabled = false;
+                copyButton.style.opacity = '1';
+                copyButton.style.cursor = 'pointer';
+                saveButton.style.opacity = '1';
+                saveButton.style.cursor = 'pointer';
+            }
+        }
+
+        // Инициализация состояния кнопок при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            updateButtonStates();
+        });
+
+        // Обработчики изменений поля контактов и чекбокса
+        document.getElementById('user-contacts').addEventListener('input', updateButtonStates);
+        document.getElementById('privacy-checkbox').addEventListener('change', updateButtonStates);
+
+        // Сохранение в буфер обмена
+        document.getElementById('copy-to-clipboard').addEventListener('click', function() {
+            const markdown = collectAnswers();
+            
+            // Копирование в буфер обмена
+            navigator.clipboard.writeText(markdown).then(function() {
+                alert('Результаты опроса скопированы в буфер обмена!');
+            }, function() {
+                // Альтернативный метод для старых браузеров
+                const textArea = document.createElement("textarea");
+                textArea.value = markdown;
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        alert('Результаты опроса скопированы в буфер обмена!');
+                    } else {
+                        alert('Не удалось скопировать в буфер обмена');
+                    }
+                } catch (err) {
+                    alert('Ошибка при копировании в буфер обмена');
+                }
+                
+                document.body.removeChild(textArea);
+            });
+        });
+
+        // Сохранение в файл
+        document.getElementById('save-to-file').addEventListener('click', function() {
+            const markdown = collectAnswers();
+            const blob = new Blob([markdown], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Опросный лист Macroscop.txt';
+            document.body.appendChild(a);
+            a.click();
+            
+            // Очистка
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+        });
+
+        // Взаимоисключающие чекбоксы для корпуса сервера
+        document.querySelectorAll('input[name^="chassis-"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    // Снимаем все другие чекбоксы в этой группе
+                    document.querySelectorAll('input[name^="chassis-"]').forEach(other => {
+                        if (other !== this) other.checked = false;
+                    });
+                }
+            });
+        });
+
+        // Взаимоисключающие чекбоксы для клиентского корпуса
+        document.querySelectorAll('input[name^="client-chassis-"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    document.querySelectorAll('input[name^="client-chassis-"]').forEach(other => {
+                        if (other !== this) other.checked = false;
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
