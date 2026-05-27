@@ -979,20 +979,23 @@
 
             <div class="form-group">
                 <label>Опишите архитектуру системы видеонаблюдения, которую хотели бы видеть:</label>
-                <div class="checkbox-group">
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="architecture-a" name="architecture" value="a">
-                        <label for="architecture-a">Единый центр обработки видео, камеры с трансляцией видео на объектах</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="architecture-b" name="architecture" value="b">
-                        <label for="architecture-b">Сервер и камеры на каждом объекте</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="architecture-c" name="architecture" value="c">
-                        <label for="architecture-c">Свой вариант ответа</label>
-                    </div>
+                <div class="os-options" style="justify-content: flex-start;" role="group" aria-label="Архитектура системы">
+                    <button type="button" class="os-option" data-checkbox-id="architecture-a" style="min-width: 0; height: auto; padding: 10px 14px; text-align: left; align-items: flex-start;" aria-pressed="false">
+                        <span class="os-mark" style="flex-shrink:0; margin-top:2px;">✓</span>
+                        <span>Единый центр обработки видео, камеры с трансляцией видео на объектах</span>
+                    </button>
+                    <button type="button" class="os-option" data-checkbox-id="architecture-b" style="min-width: 0; height: auto; padding: 10px 14px; text-align: left; align-items: flex-start;" aria-pressed="false">
+                        <span class="os-mark" style="flex-shrink:0; margin-top:2px;">✓</span>
+                        <span>Сервер и камеры на каждом объекте</span>
+                    </button>
+                    <button type="button" class="os-option" data-checkbox-id="architecture-c" style="min-width: 0; height: auto; padding: 10px 14px; text-align: left; align-items: flex-start;" aria-pressed="false">
+                        <span class="os-mark" style="flex-shrink:0; margin-top:2px;">✓</span>
+                        <span>Свой вариант ответа</span>
+                    </button>
                 </div>
+                <input type="checkbox" id="architecture-a" name="architecture" value="a" class="os-select-hidden">
+                <input type="checkbox" id="architecture-b" name="architecture" value="b" class="os-select-hidden">
+                <input type="checkbox" id="architecture-c" name="architecture" value="c" class="os-select-hidden">
                 <div id="custom-architecture" class="collapsible">
                     <textarea id="custom-architecture-text" rows="4" placeholder="Опишите ваш вариант..."></textarea>
                 </div>
@@ -1022,16 +1025,18 @@
                 
                 <div class="form-group">
                     <label>В каком исполнении должен быть корпус сервера?</label>
-                    <div class="checkbox-group">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="chassis-rack" name="chassis-rack" value="rack">
-                            <label for="chassis-rack">rack</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="chassis-tower" name="chassis-tower" value="tower">
-                            <label for="chassis-tower">tower</label>
-                        </div>
+                    <div class="os-options" role="group" aria-label="Исполнение корпуса сервера">
+                        <button type="button" class="os-option" data-checkbox-id="chassis-rack" aria-pressed="false">
+                            <span class="os-mark">✓</span>
+                            <span>rack</span>
+                        </button>
+                        <button type="button" class="os-option" data-checkbox-id="chassis-tower" aria-pressed="false">
+                            <span class="os-mark">✓</span>
+                            <span>tower</span>
+                        </button>
                     </div>
+                    <input type="checkbox" id="chassis-rack" name="chassis-rack" value="rack" class="os-select-hidden">
+                    <input type="checkbox" id="chassis-tower" name="chassis-tower" value="tower" class="os-select-hidden">
                 </div>
 
                 <div class="form-group">
@@ -1221,16 +1226,18 @@
 
                 <div class="form-group">
                     <label>Какое исполнение корпуса необходимо для клиентского рабочего места?</label>
-                    <div class="checkbox-group">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="client-chassis-rack" name="client-chassis-rack" value="rack">
-                            <label for="client-chassis-rack">rack</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="client-chassis-tower" name="client-chassis-tower" value="tower">
-                            <label for="client-chassis-tower">tower</label>
-                        </div>
+                    <div class="os-options" role="group" aria-label="Исполнение корпуса клиентского места">
+                        <button type="button" class="os-option" data-checkbox-id="client-chassis-rack" aria-pressed="false">
+                            <span class="os-mark">✓</span>
+                            <span>rack</span>
+                        </button>
+                        <button type="button" class="os-option" data-checkbox-id="client-chassis-tower" aria-pressed="false">
+                            <span class="os-mark">✓</span>
+                            <span>tower</span>
+                        </button>
                     </div>
+                    <input type="checkbox" id="client-chassis-rack" name="client-chassis-rack" value="rack" class="os-select-hidden">
+                    <input type="checkbox" id="client-chassis-tower" name="client-chassis-tower" value="tower" class="os-select-hidden">
                 </div>
 
                 <div class="form-group">
@@ -1594,26 +1601,7 @@
 
 
 
-        // Показ/скрытие пользовательской архитектуры и взаимоисключающие чекбоксы
-        document.querySelectorAll('input[name="architecture"]').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const custom = document.getElementById('custom-architecture');
-                
-                // Показ/скрытие поля для своего варианта
-                if (this.value === 'c' && this.checked) {
-                    custom.classList.add('visible');
-                } else {
-                    custom.classList.remove('visible');
-                }
-                
-                // Взаимоисключающая логика
-                if (this.checked) {
-                    document.querySelectorAll('input[name="architecture"]').forEach(other => {
-                        if (other !== this) other.checked = false;
-                    });
-                }
-            });
-        });
+
 
         // Показ/скрытие вопросов о мониторах
         document.getElementById('use-monitors').addEventListener('change', function() {
@@ -1981,25 +1969,40 @@
             }, 100);
         });
 
-        // Взаимоисключающие чекбоксы для корпуса сервера
-        document.querySelectorAll('input[name^="chassis-"]').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    // Снимаем все другие чекбоксы в этой группе
-                    document.querySelectorAll('input[name^="chassis-"]').forEach(other => {
-                        if (other !== this) other.checked = false;
+        // Обработка os-option кнопок как чекбоксов (toggle)
+        document.querySelectorAll('.os-option[data-checkbox-id]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const checkboxId = this.getAttribute('data-checkbox-id');
+                const checkbox = document.getElementById(checkboxId);
+                if (!checkbox) return;
+
+                const isActive = this.classList.contains('active');
+                this.classList.toggle('active', !isActive);
+                this.setAttribute('aria-pressed', String(!isActive));
+                checkbox.checked = !isActive;
+
+                // Взаимоисключающая логика для корпусов (chassis-*)
+                const name = checkbox.name;
+                if (name && (name.startsWith('chassis-') || name.startsWith('client-chassis-'))) {
+                    // Снять все остальные в этой родительской группе
+                    const parent = this.closest('.os-options');
+                    parent.querySelectorAll('.os-option[data-checkbox-id]').forEach(other => {
+                        if (other !== this) {
+                            other.classList.remove('active');
+                            other.setAttribute('aria-pressed', 'false');
+                            const otherId = other.getAttribute('data-checkbox-id');
+                            const otherCb = document.getElementById(otherId);
+                            if (otherCb) otherCb.checked = false;
+                        }
                     });
                 }
-            });
-        });
 
-        // Взаимоисключающие чекбоксы для клиентского корпуса
-        document.querySelectorAll('input[name^="client-chassis-"]').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    document.querySelectorAll('input[name^="client-chassis-"]').forEach(other => {
-                        if (other !== this) other.checked = false;
-                    });
+                // Показать/скрыть "свой вариант" для архитектуры
+                if (checkboxId === 'architecture-c') {
+                    const customBlock = document.getElementById('custom-architecture');
+                    if (customBlock) {
+                        customBlock.classList.toggle('visible', !isActive);
+                    }
                 }
             });
         });
