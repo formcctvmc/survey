@@ -783,21 +783,17 @@
                 font-size: 10px;
             }
         }
-        .form-group.privacy-group {
-            display: block;
-            padding: 12px;
-        }
-        .form-group.privacy-group .privacy-checkbox-container {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            width: 100%;
-        }
-        .form-group.privacy-group .privacy-checkbox-container label {
-            flex: 1;
-            margin: 0;
+
+        .feedback-notice {
+            margin: 20px 0;
+            padding: 14px 16px;
+            border: 1.5px solid var(--line);
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 6px 16px rgba(33, 39, 91, 0.04);
             font-size: 14px;
-            line-height: 1.4;
+            font-weight: 700;
+            color: var(--text);
         }
 
         /* Анимации на псевдоэлементах */
@@ -905,7 +901,6 @@
                     <path d="M10 7.5L14.5 12L10 16.5" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </div>
-            <!-- <div class="topbar-title">Опросный лист для подбора оборудования видеонаблюдения</div> -->
             <button class="topbar-pill" type="button">Подбор решения под ваши задачи</button>
         </div>
 
@@ -1010,8 +1005,6 @@
         <!-- Вторая вкладка: Вопросы для подбора серверного оборудования-->
 <div class="container">
         <div id="server-tech" class="section">
-            <!-- <h1>Вопросы для подбора серверного оборудования</h1> -->
-        
             <div class="form-group">
                 <label>Планируете приобретать сервер у Macroscop?</label>
                 <label class="toggle-switch">
@@ -1021,8 +1014,6 @@
             </div>
 
             <div id="server-questions" class="collapsible visible">
-                <!-- <h2>Вопросы для подбора серверного оборудования:</h2> -->
-                
                 <div class="form-group">
                     <label>В каком исполнении должен быть корпус сервера?</label>
                     <div class="os-options" role="group" aria-label="Исполнение корпуса сервера">
@@ -1264,21 +1255,9 @@
                 </div>
             </div>
         </div>
-        <!-- Поле для контактов -->
-        <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
-            <label><strong>Ваши контакты</strong> (телефон, email или другие способы связи):</label>
-            <textarea id="user-contacts" placeholder="Введите ваши контактные данные здесь..." rows="2"></textarea>
-        </div>
 
-        <!-- Согласие на обработку персональных данных -->
-        <div class="form-group privacy-group" style="margin-bottom: 20px;">
-            <div class="privacy-checkbox-container">
-                <input type="checkbox" id="privacy-checkbox">
-                <label for="privacy-checkbox">
-                    Я прочитал(а) и согласен(на) с <a href="https://macroscop.com/politika-konfidencialnosti-i-obrabotki-personalnyh-dannyh" target="_blank" style="color: var(--accent); text-decoration: underline;">Политикой конфиденциальности</a> и даю согласие на <a href="https://macroscop.com/politika-konfidencialnosti-i-obrabotki-personalnyh-dannyh" target="_blank" style="color: var(--accent); text-decoration: underline;">обработку своих персональных данных</a>.
-                </label>
-            </div>
-        </div>
+        <!-- Уведомление об обратной связи -->
+        <p class="feedback-notice">При отправке данных просьба указать данные для обратной связи.</p>
 
         <!-- Кнопки сохранения -->
         <div class="actions">
@@ -1290,14 +1269,9 @@
         // Функциональность вкладок
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
-                // Убрать активный класс у всех вкладок и контентов
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
-                // Добавить активный класс к выбранной вкладке
                 tab.classList.add('active');
-                
-                // Показать соответствующий контент
                 const tabId = tab.getAttribute('data-tab');
                 document.getElementById(tabId).classList.add('active');
             });
@@ -1327,13 +1301,11 @@
             "Обнаружение падений"
         ];
 
-        // Добавление строки аналитики
         function addAnalyticsRow() {
             const container = document.getElementById('analytics-container');
             const row = document.createElement('div');
             row.className = 'analytics-row';
             
-            // Создаем select для аналитики
             const select = document.createElement('select');
             analyticsList.forEach(analytic => {
                 const option = document.createElement('option');
@@ -1342,26 +1314,22 @@
                 select.appendChild(option);
             });
             
-            // Создаем input для количества камер
             const input = document.createElement('input');
             input.type = 'number';
             input.min = '0';
             input.value = '0';
             input.className = 'camera-count';
             
-            // Создаем метку
             const label = document.createElement('span');
             label.className = 'cameras-label';
             label.textContent = 'кол-во камер';
             
-            // Создаем кнопку удаления
             const removeBtn = document.createElement('button');
             removeBtn.className = 'remove-btn';
             removeBtn.textContent = '-';
             removeBtn.onclick = function() {
                 container.removeChild(row);
                 updateTotalCameras();
-                // Показать/скрыть кнопку удаления у первой строки
                 const firstRow = container.querySelector('.analytics-row');
                 if (firstRow) {
                     const firstRemoveBtn = firstRow.querySelector('.remove-btn');
@@ -1369,22 +1337,18 @@
                 }
             };
 
-            // Скрываем кнопку если это первая строка
             if (container.querySelectorAll('.analytics-row').length === 0) {
                 removeBtn.style.visibility = 'hidden';
             } else {
-                // При добавлении новой строки — показываем кнопку у первой
                 const firstRow = container.querySelector('.analytics-row');
                 if (firstRow) firstRow.querySelector('.remove-btn').style.visibility = 'visible';
             }
             
-            // Добавляем все элементы в строку
             row.appendChild(select);
             row.appendChild(input);
             row.appendChild(label);
             row.appendChild(removeBtn);
             
-            // Добавляем обработчик изменения количества камер
             input.addEventListener('input', updateTotalCameras);
             select.addEventListener('change', updateTotalCameras);
             
@@ -1392,14 +1356,11 @@
             updateTotalCameras();
         }
 
-        // Добавление группы камер
         function addCameraGroup() {
-            // Получаем контейнер для групп камер или создаем его, если он еще не существует
             let groupsContainer = document.getElementById('camera-groups-container');
             if (!groupsContainer) {
                 groupsContainer = document.createElement('div');
                 groupsContainer.id = 'camera-groups-container';
-                // Вставляем контейнер для групп камер перед кнопкой
                 const addButton = document.getElementById('add-camera-group');
                 addButton.parentNode.insertBefore(groupsContainer, addButton);
             }
@@ -1407,13 +1368,11 @@
             const group = document.createElement('div');
             group.className = 'camera-group';
             
-            // Создаем заголовок группы
             const header = document.createElement('div');
             header.className = 'camera-group-header';
             
             const title = document.createElement('h3');
             title.className = 'camera-group-title';
-            // Нумерация групп
             const groupNumber = document.querySelectorAll('.camera-group').length + 1;
             title.textContent = `Камеры ${groupNumber}`;
             
@@ -1424,7 +1383,6 @@
                 groupsContainer.removeChild(group);
                 updateTotalGroupCameras();
                 renumberCameraGroups();
-                // Показать/скрыть кнопку удаления у первой группы
                 const firstGroup = groupsContainer.querySelector('.camera-group');
                 if (firstGroup) {
                     const firstRemoveBtn = firstGroup.querySelector('.remove-btn');
@@ -1432,11 +1390,9 @@
                 }
             };
 
-            // Скрываем кнопку если это первая группа
             if (groupsContainer.querySelectorAll('.camera-group').length === 0) {
                 removeBtn.style.visibility = 'hidden';
             } else {
-                // При добавлении новой группы — показываем кнопку у первой
                 const firstGroup = groupsContainer.querySelector('.camera-group');
                 if (firstGroup) firstGroup.querySelector('.remove-btn').style.visibility = 'visible';
             }
@@ -1445,15 +1401,12 @@
             header.appendChild(removeBtn);
             group.appendChild(header);
             
-            // Создаем поля для группы камер - объединенные в одну строку
             const groupContent = document.createElement('div');
             
-            // Единый блок параметров видеопотоков группы
             const streamsGroup = document.createElement('div');
             streamsGroup.className = 'stream-section';
             streamsGroup.innerHTML = `
                 <div class="streams-container">
-                    <!-- Первая строка с количеством камер и количеством потоков -->
                     <div class="stream-row">
                         <div class="stream-field">
                             <label>Количество камер:</label>
@@ -1468,7 +1421,6 @@
                                 <option value="4">4</option>
                             </select>
                         </div>
-                        <!-- Динамически добавляемые строки потоков -->
                         <div class="group-additional-streams">
                         </div>
                     </div>
@@ -1479,24 +1431,19 @@
             group.appendChild(groupContent);
             groupsContainer.appendChild(group);
             
-            // Перемещаем кнопку под только что созданную группу
             const addButton = document.getElementById('add-camera-group');
             groupsContainer.parentNode.insertBefore(addButton, group.nextSibling);
             
-            // Добавляем обработчики событий
             const countInput = group.querySelector('.group-camera-count');
             countInput.addEventListener('input', updateTotalGroupCameras);
             
-            // Обработчик изменения количества потоков в группе
             const streamCountSelect = group.querySelector('.group-stream-count');
             streamCountSelect.addEventListener('change', function() {
                 const streamCount = parseInt(this.value);
                 const additionalStreamsContainer = group.querySelector('.group-additional-streams');
                 
-                // Очистим контейнер
                 additionalStreamsContainer.innerHTML = '';
                 
-                // Добавим строки потоков в том же 4-колоночном макете, начиная с потока 1
                 for (let i = 1; i <= streamCount; i++) {
                     const streamRow = document.createElement('div');
                     streamRow.className = 'stream-row';
@@ -1529,81 +1476,50 @@
                     additionalStreamsContainer.appendChild(streamRow);
                 }
                 
-                // Установим значения по умолчанию для первого потока
                 const resolutionSelect1 = group.querySelector('.group-stream-resolution-1');
                 const codecSelect1 = group.querySelector('.group-stream-codec-1');
                 
-                if (resolutionSelect1) {
-                    resolutionSelect1.value = "2"; // 2 MP
-                }
+                if (resolutionSelect1) resolutionSelect1.value = "2";
+                if (codecSelect1) codecSelect1.value = "h264";
                 
-                if (codecSelect1) {
-                    codecSelect1.value = "h264"; // H.264
-                }
-                
-                // Установим значения по умолчанию для второго потока, если он существует
                 if (streamCount >= 2) {
                     const resolutionSelect2 = group.querySelector('.group-stream-resolution-2');
                     const codecSelect2 = group.querySelector('.group-stream-codec-2');
-                    
-                    if (resolutionSelect2) {
-                        resolutionSelect2.value = "0.3"; // 0,3 MP
-                    }
-                    
-                    if (codecSelect2) {
-                        codecSelect2.value = "h264"; // H.264
-                    }
+                    if (resolutionSelect2) resolutionSelect2.value = "0.3";
+                    if (codecSelect2) codecSelect2.value = "h264";
                 }
             });
             
-            // Автоматически отображаем второй поток при создании новой группы
             streamCountSelect.dispatchEvent(new Event('change'));
             
             updateTotalGroupCameras();
         }
 
-        // Обновление общего количества камер
         function updateTotalCameras() {
             let total = 0;
             document.querySelectorAll('.analytics-row').forEach(row => {
                 const input = row.querySelector('.camera-count');
-                if (input) {
-                    total += parseInt(input.value) || 0;
-                }
+                if (input) total += parseInt(input.value) || 0;
             });
-            
             document.getElementById('total-cameras').textContent = total;
         }
 
-        // Обновление общего количества камер во всех группах
         function updateTotalGroupCameras() {
             let total = 0;
             document.querySelectorAll('.camera-group').forEach(group => {
                 const input = group.querySelector('.group-camera-count');
-                if (input) {
-                    total += parseInt(input.value) || 0;
-                }
+                if (input) total += parseInt(input.value) || 0;
             });
-            
-            
             document.getElementById('total-group-cameras').textContent = total;
         }
 
-        // Перенумерация групп камер после удаления
         function renumberCameraGroups() {
             document.querySelectorAll('.camera-group').forEach((group, index) => {
                 const title = group.querySelector('.camera-group-title');
-                if (title) {
-                    title.textContent = `Камеры ${index + 1}`;
-                }
+                if (title) title.textContent = `Камеры ${index + 1}`;
             });
         }
 
-
-
-
-
-        // Показ/скрытие вопросов о мониторах
         document.getElementById('use-monitors').addEventListener('change', function() {
             const monitorQuestions = document.getElementById('monitor-questions');
             if (this.checked) {
@@ -1613,7 +1529,6 @@
             }
         });
 
-        // Показ/скрытие вопросов о серверном оборудовании
         document.getElementById('select-server-equipment').addEventListener('change', function() {
             const serverQuestions = document.getElementById('server-questions');
             const specQuestions = document.getElementById('spec-questions');
@@ -1627,7 +1542,6 @@
             }
         });
 
-        // Выбор ОС в блоке с карточками
         const osSelect = document.getElementById('os');
         const osButtons = document.querySelectorAll('.os-option');
 
@@ -1648,20 +1562,14 @@
 
         syncOsButtons(osSelect.value);
 
-        // Инициализация первой строки аналитики
         document.getElementById('add-analytics').addEventListener('click', addAnalyticsRow);
-
-        // Инициализация первой группы камер
         document.getElementById('add-camera-group').addEventListener('click', addCameraGroup);
 
-        // Единая инициализация при загрузке DOM
         document.addEventListener('DOMContentLoaded', function() {
             addAnalyticsRow();
             addCameraGroup();
-            updateButtonStates();
         });
 
-        // Показ/скрытие вопросов клиентского оборудования
         document.getElementById('select-client-equipment').addEventListener('change', function() {
             const clientQuestions = document.getElementById('client-questions');
             if (this.checked) {
@@ -1673,41 +1581,32 @@
             }
         });
 
-        // Функция для сбора всех ответов в формате markdown
         function collectAnswers() {
             let markdown = "# Опросный лист Macroscop\n\n";
             
-            // Первая вкладка
             markdown += "## Опросный лист для подбора оборудования видеонаблюдения\n\n";
             
-            // Аналитика
             markdown += "### Какую аналитику вы хотели бы использовать?\n";
             let totalCameras = 0;
             document.querySelectorAll('.analytics-row').forEach((row, index) => {
                 const select = row.querySelector('select');
                 const input = row.querySelector('.camera-count');
                 if (select && input) {
-                    const analytic = select.value;
-                    const count = input.value;
-                    markdown += `- ${analytic}: ${count} камер\n`;
-                    totalCameras += parseInt(count) || 0;
+                    markdown += `- ${select.value}: ${input.value} камер\n`;
+                    totalCameras += parseInt(input.value) || 0;
                 }
             });
-            
             markdown += `\n**Общее количество аналитики: ${totalCameras}**\n\n`;
             
-            // ОС
             const os = document.getElementById('os').value;
             markdown += `### На какую ОС ориентируетесь?\n${os}\n\n`;
             
-            // Хранение архива
             const archiveDays = document.getElementById('archive-days').value;
             const recordingHours = document.getElementById('recording-hours').value;
             markdown += `### Сколько часов в сутки запись? Сколько дней хранится архив?\n`;
             markdown += `- Хранение архива, дней: ${archiveDays}\n`;
             markdown += `- Запись, ч/сут: ${recordingHours}\n\n`;
             
-            // Архитектура
             const architecture = document.querySelector('input[name="architecture"]:checked');
             markdown += `### Опишите архитектуру системы видеонаблюдения\n`;
             if (architecture) {
@@ -1722,15 +1621,13 @@
             }
             markdown += "\n";
             
-            // Группы камер
             markdown += "### Группы камер\n";
             let totalGroupCameras = 0;
             document.querySelectorAll('.camera-group').forEach((group, index) => {
                 const cameraCount = group.querySelector('.group-camera-count').value;
                 const streamCount = group.querySelector('.group-stream-count').value;
-                // Теперь первая строка потоков тоже имеет индекс 1
-                const streamResolution = group.querySelector('.group-stream-resolution-1') ? group.querySelector('.group-stream-resolution-1').value : group.querySelector('.group-stream-resolution').value;
-                const streamCodec = group.querySelector('.group-stream-codec-1') ? group.querySelector('.group-stream-codec-1').value : group.querySelector('.group-stream-codec').value;
+                const streamResolution = group.querySelector('.group-stream-resolution-1') ? group.querySelector('.group-stream-resolution-1').value : '';
+                const streamCodec = group.querySelector('.group-stream-codec-1') ? group.querySelector('.group-stream-codec-1').value : '';
                 
                 markdown += `\n**Камеры ${index + 1}**\n`;
                 markdown += `- Количество камер: ${cameraCount}\n`;
@@ -1738,7 +1635,6 @@
                 markdown += `- Разрешение потока 1: ${streamResolution} MP\n`;
                 markdown += `- Кодек потока 1: ${streamCodec.toUpperCase()}\n`;
                 
-                // Добавляем информацию о дополнительных потоках
                 for (let i = 2; i <= streamCount; i++) {
                     const additionalResolution = group.querySelector(`.group-stream-resolution-${i}`) ? group.querySelector(`.group-stream-resolution-${i}`).value : 'Не указано';
                     const additionalCodec = group.querySelector(`.group-stream-codec-${i}`) ? group.querySelector(`.group-stream-codec-${i}`).value : 'Не указано';
@@ -1750,25 +1646,20 @@
             });
             markdown += `\n**Общее количество камер во всех группах: ${totalGroupCameras}**\n\n`;
             
-            // Вторая вкладка
             markdown += "## Техническая часть реализации сервера\n\n";
             
-            // Подбор серверного оборудования
             const selectServer = document.getElementById('select-server-equipment').checked;
             markdown += `### Подобрать серверное оборудование для видеонаблюдения?\n${selectServer ? 'Да' : 'Нет'}\n\n`;
             
             if (selectServer) {
-                // Вопросы для подбора серверного оборудования
                 markdown += "### Вопросы для подбора серверного оборудования\n";
                 
-                // Корпус сервера
                 const chassisCheckboxes = document.querySelectorAll('input[name^="chassis-"]:checked');
                 if (chassisCheckboxes.length > 0) {
                     const chassisValues = Array.from(chassisCheckboxes).map(cb => cb.value).join(', ');
                     markdown += `- В каком исполнении должен быть корпус сервера: ${chassisValues}\n`;
                 }
                 
-                // Мониторы
                 const useMonitors = document.getElementById('use-monitors').checked;
                 markdown += `- Будут ли мониторы для отображения камер в реальном времени: ${useMonitors ? 'Да' : 'Нет'}\n`;
                 
@@ -1781,40 +1672,32 @@
                     markdown += `  - Количество камер на мониторы: ${camerasPerMonitor}\n`;
                 }
                 
-                // Hot swap
                 const hotSwap = document.getElementById('hot-swap').checked;
                 markdown += `- Использовать hot swap (горячая замена дисков): ${hotSwap ? 'Да' : 'Нет'}\n`;
                 
-                // RAID контроллер
                 const raidController = document.getElementById('raid-controller').checked;
                 markdown += `- Необходим ли рейд контроллер: ${raidController ? 'Да' : 'Нет'}\n`;
                 
-                // RAID 1
                 const raid1 = document.getElementById('raid-1').checked;
                 markdown += `- Использовать зеркалирование системного раздела (Raid 1): ${raid1 ? 'Да' : 'Нет'}\n`;
                 
-                // Резервирование питания
                 const redundantPSU = document.getElementById('redundant-psu').checked;
                 markdown += `- Использовать резервирование питания: ${redundantPSU ? 'Да' : 'Нет'}\n`;
                 
-                // IPMI
                 const ipmi = document.getElementById('ipmi').checked;
                 markdown += `- Использовать iLO, iDRAC, IPMI: ${ipmi ? 'Да' : 'Нет'}\n`;
             } else {
-                // Подбор спецификаций
                 const selectSpecs = document.getElementById('select-specs').checked;
                 markdown += `### Необходим подбор спецификаций сервера, для самостоятельной покупки оборудования?\n${selectSpecs ? 'Да' : 'Нет'}\n`;
             }
             markdown += "\n";
             
-            // Третья вкладка
             markdown += "## Вопросы для расчета клиентского оборудования\n\n";
             
-            // Подбор клиентского оборудования
             const selectClient = document.getElementById('select-client-equipment').checked;
             markdown += `### Необходим подбор клиентского оборудования?\n${selectClient ? 'Да' : 'Нет'}\n\n`;
             
-            let clientComments = ''; // Объявляем переменную заранее
+            let clientComments = '';
             
             if (selectClient) {
                 const clientMonitorCount = document.getElementById('client-monitor-count').value;
@@ -1825,7 +1708,7 @@
                 const clientRaid1 = document.getElementById('client-raid-1').checked;
                 const clientWorkstations = document.getElementById('client-workstations').value;
                 const clientCamerasPerMonitor = document.getElementById('client-cameras-per-monitor').value;
-                clientComments = document.getElementById('client-comments').value; // Присваиваем значение только если блок активен
+                clientComments = document.getElementById('client-comments').value;
                 
                 markdown += `- Количество мониторов: ${clientMonitorCount}\n`;
                 markdown += `- Разрешение мониторов: ${clientMonitorResolution}\n`;
@@ -1836,7 +1719,6 @@
                     markdown += `- Какое исполнение корпуса необходимо для клиентского рабочего места: ${clientChassisValues}\n`;
                 }
                 
-                // Добавляем информацию о кодеках
                 const clientMainStreamCodec = document.getElementById('client-main-stream-codec').value;
                 const clientSecondaryStreamCodec = document.getElementById('client-secondary-stream-codec').value;
                 markdown += `- Кодек основного потока: ${clientMainStreamCodec.toUpperCase()}\n`;
@@ -1849,7 +1731,6 @@
                 }
             }
             
-            // Комментарии к расчету на всех вкладках
             const serverMainComments = document.getElementById('server-main-comments').value;
             if (serverMainComments) {
                 markdown += `\n### Комментарии к расчету (Серверное оборудование): ${serverMainComments}\n`;
@@ -1864,71 +1745,15 @@
                 markdown += `\n### Комментарии к расчету (Клиентское оборудование): ${clientComments}\n`;
             }
             
-            // Контактные данные
-            const userContacts = document.getElementById('user-contacts').value;
-            if (userContacts) {
-                markdown += `\n### Ваши контакты:\n${userContacts}\n`;
-            }
-            
-            // Согласие на обработку персональных данных
-            const privacyCheckbox = document.getElementById('privacy-checkbox');
-            if (privacyCheckbox && privacyCheckbox.checked) {
-                markdown += `\n### Клиент согласился на обработку персональных данных\n`;
-            }
-            
             return markdown;
         }
 
-        // Функция обновления состояния кнопок на основе контактов и чекбокса
-        function updateButtonStates() {
-            const contacts = document.getElementById('user-contacts').value.trim();
-            const checkbox = document.getElementById('privacy-checkbox');
-            const copyButton = document.getElementById('copy-to-clipboard');
-            const saveButton = document.getElementById('save-to-file');
-            
-            // Если в поле контактов есть данные, кнопки должны быть недоступны до отметки чекбокса
-            if (contacts.length > 0) {
-                // Кнопки активны только если чекбокс отмечен
-                const enabled = checkbox.checked;
-                copyButton.disabled = !enabled;
-                saveButton.disabled = !enabled;
-                
-                // Визуальное отключение (стили)
-                if (!enabled) {
-                    copyButton.style.opacity = '0.5';
-                    copyButton.style.cursor = 'not-allowed';
-                    saveButton.style.opacity = '0.5';
-                    saveButton.style.cursor = 'not-allowed';
-                } else {
-                    copyButton.style.opacity = '1';
-                    copyButton.style.cursor = 'pointer';
-                    saveButton.style.opacity = '1';
-                    saveButton.style.cursor = 'pointer';
-                }
-            } else {
-                // Если контактов нет, кнопки всегда доступны
-                copyButton.disabled = false;
-                saveButton.disabled = false;
-                copyButton.style.opacity = '1';
-                copyButton.style.cursor = 'pointer';
-                saveButton.style.opacity = '1';
-                saveButton.style.cursor = 'pointer';
-            }
-        }
-
-        // Обработчики изменений поля контактов и чекбокса
-        document.getElementById('user-contacts').addEventListener('input', updateButtonStates);
-        document.getElementById('privacy-checkbox').addEventListener('change', updateButtonStates);
-
-        // Сохранение в буфер обмена
         document.getElementById('copy-to-clipboard').addEventListener('click', function() {
             const markdown = collectAnswers();
             
-            // Копирование в буфер обмена
             navigator.clipboard.writeText(markdown).then(function() {
                 alert('Результаты опроса скопированы в буфер обмена!');
             }, function() {
-                // Альтернативный метод для старых браузеров
                 const textArea = document.createElement("textarea");
                 textArea.value = markdown;
                 document.body.appendChild(textArea);
@@ -1950,7 +1775,6 @@
             });
         });
 
-        // Сохранение в файл
         document.getElementById('save-to-file').addEventListener('click', function() {
             const markdown = collectAnswers();
             const blob = new Blob([markdown], { type: 'text/plain;charset=utf-8' });
@@ -1962,14 +1786,12 @@
             document.body.appendChild(a);
             a.click();
             
-            // Очистка
             setTimeout(() => {
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
             }, 100);
         });
 
-        // Обработка os-option кнопок как чекбоксов (toggle)
         document.querySelectorAll('.os-option[data-checkbox-id]').forEach(btn => {
             btn.addEventListener('click', function() {
                 const checkboxId = this.getAttribute('data-checkbox-id');
@@ -1981,10 +1803,8 @@
                 this.setAttribute('aria-pressed', String(!isActive));
                 checkbox.checked = !isActive;
 
-                // Взаимоисключающая логика для корпусов (chassis-*)
                 const name = checkbox.name;
                 if (name && (name.startsWith('chassis-') || name.startsWith('client-chassis-'))) {
-                    // Снять все остальные в этой родительской группе
                     const parent = this.closest('.os-options');
                     parent.querySelectorAll('.os-option[data-checkbox-id]').forEach(other => {
                         if (other !== this) {
@@ -1997,7 +1817,6 @@
                     });
                 }
 
-                // Показать/скрыть "свой вариант" для архитектуры
                 if (checkboxId === 'architecture-c') {
                     const customBlock = document.getElementById('custom-architecture');
                     if (customBlock) {
@@ -2006,6 +1825,10 @@
                 }
             });
         });
+
+        // Инициализация при загрузке
+        addAnalyticsRow();
+        addCameraGroup();
     </script>
 </body>
 </html>
